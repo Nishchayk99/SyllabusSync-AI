@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SyllabusSync AI — Find the gaps. Study smarter.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="/"><span class="brand-mark">S<span>+</span></span><span>SyllabusSync<small>AI STUDY INTELLIGENCE</small></span></a>
+      <div class="side-label">WORKSPACE</div>
+      <a class="nav-item active" href="/"><span class="nav-icon">▦</span> New analysis <span class="nav-dot"></span></a>
+      <a class="nav-item muted" href="#how-it-works"><span class="nav-icon">⌘</span> How it works</a>
+      <div class="sidebar-bottom"><div class="mini-orb">✳</div><strong>Study with clarity.</strong><p>Find what's covered, what's missing, and what deserves your attention.</p><span class="local-pill"><i></i> Local-first prototype</span></div>
+    </aside>
+    <main class="main-area">
+      <header class="topbar"><div class="breadcrumb">Workspace <span>/</span> <b>New analysis</b></div><div class="top-right"><span class="status-pill"><i></i> Ready to analyse</span><div class="avatar">SS</div></div></header>
+      <section class="hero">
+        <div class="eyebrow"><span class="sparkle">✦</span> YOUR PERSONAL SYLLABUS INTELLIGENCE</div>
+        <h1>Find the gaps.<br><span>Study smarter.</span></h1>
+        <p class="hero-copy">Three PDFs in. A clear study plan out. Let AI compare your syllabus, notes and previous-year papers to show what needs your attention.</p>
+        <div class="hero-tags"><span>✦ Meaning-based matching</span><span>⌁ Evidence with page numbers</span><span>↗ Downloadable report</span></div>
+      </section>
+      {% with messages = get_flashed_messages(with_categories=true) %}{% if messages %}{% for category, message in messages %}<div class="alert alert-{{ category }}">{{ message }}</div>{% endfor %}{% endif %}{% endwith %}
+      <section class="upload-section" id="upload">
+        <div class="section-heading"><div><div class="section-kicker">STEP 01 — ADD YOUR MATERIAL</div><h2>Bring your three PDFs</h2><p>Keep each document in its right place for the most useful comparison.</p></div><span class="required-chip">3 files required</span></div>
+        <form action="/analyze" method="post" enctype="multipart/form-data" id="uploadForm">
+          <div class="upload-grid">
+            <label class="upload-card" for="syllabus"><div class="file-top"><span class="file-icon violet">▤</span><span class="file-required">REQUIRED</span></div><h3>Official syllabus</h3><p>The source of truth. We'll detect topics and use it as the comparison baseline.</p><div class="drop-zone" id="zone-syllabus"><span class="upload-symbol">↑</span><b>Choose syllabus PDF</b><small>or drop it here · PDF only</small></div><input id="syllabus" name="syllabus" type="file" accept="application/pdf,.pdf" required hidden><div class="selected-file" id="selected-syllabus"><span>PDF</span><span class="filename">No file selected</span></div></label>
+            <label class="upload-card" for="notes"><div class="file-top"><span class="file-icon blue">▧</span><span class="file-required">REQUIRED</span></div><h3>Study notes</h3><p>Class notes or your study material. We'll find related passages and possible gaps.</p><div class="drop-zone" id="zone-notes"><span class="upload-symbol">↑</span><b>Choose notes PDF</b><small>or drop it here · PDF only</small></div><input id="notes" name="notes" type="file" accept="application/pdf,.pdf" required hidden><div class="selected-file" id="selected-notes"><span>PDF</span><span class="filename">No file selected</span></div></label>
+            <label class="upload-card" for="pyq"><div class="file-top"><span class="file-icon orange">▥</span><span class="file-required">REQUIRED</span></div><h3>Previous-year papers</h3><p>Question papers to estimate topic frequency and identify recurring topics.</p><div class="drop-zone" id="zone-pyq"><span class="upload-symbol">↑</span><b>Choose PYQ PDF</b><small>or drop it here · PDF only</small></div><input id="pyq" name="pyq" type="file" accept="application/pdf,.pdf" required hidden><div class="selected-file" id="selected-pyq"><span>PDF</span><span class="filename">No file selected</span></div></label>
+          </div>
+          <div class="upload-footer"><div class="privacy-note"><span class="lock">⌑</span><span><b>Your files stay local</b><small>Processed by this app on your computer. PDFs are removed after analysis.</small></span></div><button type="submit" class="primary-btn" id="submitBtn"><span>Analyse my PDFs</span><span class="btn-arrow">↗</span></button></div>
+        </form>
+      </section>
+      <section class="process-section" id="how-it-works"><div class="section-heading"><div><div class="section-kicker">STEP 02 — GET CLARITY</div><h2>From documents to direction</h2><p>See how your material turns into an actionable checklist.</p></div></div><div class="process-grid"><div class="process-card"><span class="process-num">01</span><div class="process-icon">⌕</div><h3>Extract & understand</h3><p>Read PDF text, keep page references and identify syllabus topics.</p></div><div class="process-card"><span class="process-num">02</span><div class="process-icon">⟷</div><h3>Match by meaning</h3><p>Compare topics with notes using sentence embeddings and similarity scores.</p></div><div class="process-card"><span class="process-num">03</span><div class="process-icon">◷</div><h3>Prioritise your study</h3><p>Review coverage labels, supporting evidence and PYQ topic counts.</p></div></div></section>
+      <footer class="page-footer"><span>SYLLABUSSYNC AI <span class="footer-sep">/</span> MINI PROJECT 2026–27</span><span>AI-assisted analysis · Human review recommended</span></footer>
+    </main>
+  </div>
+  <div class="loading-overlay" id="loadingOverlay" aria-live="polite"><div class="loading-card"><div class="loading-spinner"></div><h3>Analysing your study material</h3><p>Extracting pages, matching topics and building your report. The first run may take longer while the local AI model loads.</p><div class="loading-bar"><span></span></div></div></div>
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body></html>

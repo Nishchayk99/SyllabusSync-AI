@@ -25,17 +25,31 @@ _model_attempted = False
 _model_error = None
 _RESULTS = {}
 
+
 def get_model():
     global _model, _model_attempted, _model_error
+
+    # Use lightweight TF-IDF on the cloud unless explicitly enabled.
+    use_transformer = os.environ.get(
+        "USE_SENTENCE_TRANSFORMERS", "0"
+    ).strip().lower() in {"1", "true", "yes"}
+
+    if not use_transformer:
+        return None
+
     if _model_attempted:
         return _model
+
     _model_attempted = True
     try:
         from sentence_transformers import SentenceTransformer
-        _model = SentenceTransformer(os.environ.get('SENTENCE_MODEL', 'all-MiniLM-L6-v2'))
+        _model = SentenceTransformer(
+            os.environ.get("SENTENCE_MODEL", "all-MiniLM-L6-v2")
+        )
     except Exception as exc:
         _model_error = str(exc)
         _model = None
+
     return _model
 
 
